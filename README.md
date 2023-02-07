@@ -13,7 +13,7 @@ $$ dist(\vec{v},\vec{w})=\sqrt{(v_1-w_1)^2+(v_2-w_2)^2+...(v_p-w_p)^2}$$
 
 We shall have $n$ different weight vectors because we have $n$ different observations.
 
-
+The message of this picture is that we are going to use kernels, such as Gaussian or similar shapes, for solving local linear regression problems.
 ![\label{fig:Loess_1}](https://github.com/nitugmohan/DATA-441/blob/main/Loess_1.drawio.svg)
 
 
