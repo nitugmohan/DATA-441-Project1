@@ -15,3 +15,20 @@ We shall have $n$ different weight vectors because we have $n$ different observa
 
 
 ![\label{fig:Loess_1}](https://github.com/nitugmohan/DATA-441/blob/main/Loess_1.drawio.svg)
+
+
+```python
+# Libraries of functions need to be imported
+
+%matplotlib inline
+%config InlineBackend.figure_format = 'retina'
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+mpl.rcParams['figure.dpi'] = 120
+
+import numpy as np
+import pandas as pd
+from sklearn import linear_model
+from sklearn.metrics import mean_squared_error as mse
+from scipy import linalg
+```
