@@ -5,7 +5,7 @@
 
 With linear regression, one can make predictions as a weighted combination of the input feature values, with positive of negative weights; it is used for computing linear relationships between an input (X) and output (Y). To put it plainly, a straight line should be able to easily split/categorize the data. This follows the equation of:
 
-<img src="LRequation.png" class="LR" alt=""> </div>
+<img src="LRequation.png" class="LR" alt=""> 
 
 
 However, if there is a non-linear relationship between X and Y, it might be better to utilize a locally weighted regression. 
@@ -21,7 +21,7 @@ In this context, local properties are relative to a metric. A metric is a method
 
 The independent observations are the rows of the matrix $X$. Each row has a number of columns (this is the number of features) and we can denote it by $p.$ As such, every row is a vector in $\mathbb{R}^p.$ The distance between two independent observations is the Euclidean distance between the two represented $p-$ dimensional vectors. The equation is:
 
-<img src="LWRequation.png" class="LWR" alt=""> </div>
+<img src="LWRequation.png" class="LWR" alt="">
 
 
 We shall have $n$ different weight vectors because we have $n$ different observations.
