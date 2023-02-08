@@ -3,15 +3,21 @@
 
 ## Locally Weighted Regression
 
-With linear regression, one can make predictions as a weighted combination of the input feature values, with positive of negative weights; it is used for computing linear relationships between an input (X) and output (Y). To put it plainly, a straight line should be able to easily split/categorize the data. This follows the equation of:
+With linear regression, one can make predictions as a weighted combination of the input feature values, with positive of negative weights; it is used for computing linear relationships between an input (X) and output (Y). To put it plainly, a straight line should be able to easily split/categorize the data (linearly seperable data). This follows the equation of:
 
 <img src="LRequation.png" class="LR" alt=""> 
 
 
-However, if there is a non-linear relationship between X and Y, it might be better to utilize a locally weighted regression. 
+However, if there is a non-linear relationship between X and Y, it might be better to utilize a locally weighted regression. This type of algorithm assigns weights to data points to overcome the problem of non-linearly seperable data. This a non-parametric algorithm meaning that it does not have set parameters like linear regression. Parameters are calculated for each data point based on the point's location. Points that are closer to x will get a higher "preference." It is important to note that this is a generalization of k-nearest Neighbor and there is not training phase. The work is done while making predictions.
+
+Weights are assigned by kernel smoothing.
 
 
 
+Drawbacks:
+1. Need to evaluate whole dataset everytime
+2. Higher computation cost
+3. More memory required
 
 
 
@@ -82,3 +88,8 @@ $$ K(x):=\begin{cases}
 \end{cases}
 $$
 
+
+
+References: 
+https://www.geeksforgeeks.org/ml-locally-weighted-linear-regression/
+https://xavierbourretsicotte.github.io/loess.html
