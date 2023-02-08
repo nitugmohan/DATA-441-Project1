@@ -57,27 +57,74 @@ Drawbacks:
 3. More memory required
 
 
-
-
+The function below is one approach for the locally weighted regression by Alex Gramfort:
 
 ```python
-# Libraries of functions need to be imported
+# approach by Alex Gramfort
 
-%matplotlib inline
-%config InlineBackend.figure_format = 'retina'
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-mpl.rcParams['figure.dpi'] = 120
+def lowess_ag(x, y, f=2. / 3., iter=3):
+    """lowess(x, y, f=2./3., iter=3) -> yest
+    Lowess smoother: Robust locally weighted regression.
+    The lowess function fits a nonparametric regression curve to a scatterplot.
+    The arrays x and y contain an equal number of elements; each pair
+    (x[i], y[i]) defines a data point in the scatterplot. The function returns
+    the estimated (smooth) values of y.
+    The smoothing span is given by f. A larger value for f will result in a
+    smoother curve. The number of robustifying iterations is given by iter. The
+    function will run faster with a smaller number of iterations.
+    """
+    n = len(x)
+    r = int(ceil(f * n))
+    h = [np.sort(np.abs(x - x[i]))[r] for i in range(n)]
+    w = np.clip(np.abs((x[:, None] - x[None, :]) / h), 0.0, 1.0)
+    w = (1 - w ** 3) ** 3
+    yest = np.zeros(n)
+    delta = np.ones(n)
+    for iteration in range(iter):
+        for i in range(n):
+            weights = delta * w[:, i]
+            b = np.array([np.sum(weights * y), np.sum(weights * y * x)])
+            A = np.array([[np.sum(weights), np.sum(weights * x)],
+                          [np.sum(weights * x), np.sum(weights * x * x)]])
+            beta = linalg.solve(A, b)
+            yest[i] = beta[0] + beta[1] * x[i]
 
-import numpy as np
-import pandas as pd
-from sklearn import linear_model
-from sklearn.metrics import mean_squared_error as mse
-from scipy import linalg
+        residuals = y - yest
+        s = np.median(np.abs(residuals))
+        delta = np.clip(residuals / (6.0 * s), -1, 1)
+        delta = (1 - delta ** 2) ** 2
+
+    return yest
 ```
 
 
 
+
+Here is another approach for locally weighted regression: 
+```python
+def lowess(x, y,x_new, kern, tau=0.05):
+    # tau is called bandwidth K((x-x[i])/(2*tau))
+    # tau is a hyper-parameter
+    w = weights_matrix(x,x_new,kern,tau) 
+    if np.isscalar(x_new):
+      lm.fit(np.diag(w).dot(x.reshape(-1,1)),np.diag(w).dot(y.reshape(-1,1)))
+      yest = lm.predict([[x_new]])[0][0]
+    else:
+      n = len(x_new)
+      yest = np.zeros(n)
+      #Looping through all x-points
+      for i in range(n):
+        lm.fit(np.diag(w[i,:]).dot(x.reshape(-1,1)),np.diag(w[i,:]).dot(y.reshape(-1,1)))
+        yest[i] = lm.predict(x_new[i].reshape(-1,1)) 
+
+    return yest
+```
+
+
+
+
+
+
 References: 
-https://www.geeksforgeeks.org/ml-locally-weighted-linear-regression/
-https://xavierbourretsicotte.github.io/loess.html
+1. https://www.geeksforgeeks.org/ml-locally-weighted-linear-regression/
+2. https://xavierbourretsicotte.github.io/loess.html
