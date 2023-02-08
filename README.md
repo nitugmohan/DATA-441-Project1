@@ -5,7 +5,7 @@
 
 With linear regression, one can make predictions as a weighted combination of the input feature values, with positive of negative weights; it is used for computing linear relationships between an input (X) and output (Y). To put it plainly, a straight line should be able to easily split/categorize the data. This follows the equation of:
 
-$$\text{Predicted Value} = weight_1 \cdot \text{Feature}_1 + weight_2 \cdot \text{Feature}_2 + ... + weight_p \cdot \text{Feature}_p $$
+<img src="LRequation.png" class="LR" alt=""> </div>
 
 
 However, if there is a non-linear relationship between X and Y, it might be better to utilize a locally weighted regression. 
