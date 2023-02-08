@@ -21,6 +21,11 @@ Drawbacks:
 
 
 
+
+
+
+
+
 **Main Idea:** Trends and associations are generally nonlinear; however, *locally*, trends can be interpreted linearly.
 
 In this context, local properties are relative to a metric. A metric is a method by which we compute the distance between two observations. Observations contain multiple features, and if they are numeric, we can see them as vectors in a finite-dimensional Euclidean space.
@@ -34,24 +39,9 @@ We shall have $n$ different weight vectors because we have $n$ different observa
 
 The message of this picture is that we are going to use kernels, such as Gaussian or similar shapes, for solving local linear regression problems.
 
+<p align="center">
 <img src="Loess_1.drawio.svg" class="Loess" alt="">
-
-```python
-# Libraries of functions need to be imported
-
-%matplotlib inline
-%config InlineBackend.figure_format = 'retina'
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-mpl.rcParams['figure.dpi'] = 120
-
-import numpy as np
-import pandas as pd
-from sklearn import linear_model
-from sklearn.metrics import mean_squared_error as mse
-from scipy import linalg
-```
-
+</p>
 
 ## Different Kernels
 
@@ -87,6 +77,25 @@ $$ K(x):=\begin{cases}
 0 \;\;\; \text{otherwise}
 \end{cases}
 $$
+
+
+
+
+```python
+# Libraries of functions need to be imported
+
+%matplotlib inline
+%config InlineBackend.figure_format = 'retina'
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+mpl.rcParams['figure.dpi'] = 120
+
+import numpy as np
+import pandas as pd
+from sklearn import linear_model
+from sklearn.metrics import mean_squared_error as mse
+from scipy import linalg
+```
 
 
 
