@@ -3,6 +3,18 @@
 
 ## Locally Weighted Regression
 
+With linear regression, one can make predictions as a weighted combination of the input feature values, with positive of negative weights; it is used for computing linear relationships between an input (X) and output (Y). To put it plainly, a straight line should be able to easily split/categorize the data. This follows the equation of:
+
+$$\text{Predicted Value} = weight_1 \cdot \text{Feature}_1 + weight_2 \cdot \text{Feature}_2 + ... + weight_p \cdot \text{Feature}_p $$
+
+
+However, if there is a non-linear relationship between X and Y, it might be better to utilize a locally weighted regression. 
+
+
+
+
+
+
 **Main Idea:** Trends and associations are generally nonlinear; however, *locally*, trends can be interpreted linearly.
 
 In this context, local properties are relative to a metric. A metric is a method by which we compute the distance between two observations. Observations contain multiple features, and if they are numeric, we can see them as vectors in a finite-dimensional Euclidean space.
@@ -15,7 +27,7 @@ We shall have $n$ different weight vectors because we have $n$ different observa
 
 The message of this picture is that we are going to use kernels, such as Gaussian or similar shapes, for solving local linear regression problems.
 
-![\label{fig:Loess_1}](https://github.com/nitugmohan/DATA-441-Project1/blob/449e96a6bfd6942f90d67cd657b1afd46523fa75/Loess_1.drawio.svg)
+![image](https://github.com/nitugmohan/DATA-441-Project1/blob/main/Loess_1.drawio.svg)
 
 
 ```python
