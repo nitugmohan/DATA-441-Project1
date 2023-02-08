@@ -8,10 +8,25 @@ With linear regression, one can make predictions as a weighted combination of th
 <img src="LRequation.png" class="LR" alt=""> 
 
 
-However, if there is a non-linear relationship between X and Y, it might be better to utilize a locally weighted regression. This type of algorithm assigns weights to data points to overcome the problem of non-linearly seperable data. This a non-parametric algorithm meaning that it does not have set parameters like linear regression. Parameters are calculated for each data point based on the point's location. Points that are closer to x will get a higher "preference." It is important to note that this is a generalization of k-nearest Neighbor and there is not training phase. The work is done while making predictions.
+However, if there is a non-linear relationship between X and Y, it might be better to utilize a locally weighted regression. This type of algorithm assigns weights to data points to overcome the problem of non-linearly seperable data. This a non-parametric algorithm meaning that it does not have set parameters like linear regression. Parameters (tau) are calculated for each data point based on the point's location. Points that are closer to x will get a higher "preference." It is important to note that this is a generalization of k-nearest Neighbor and there is not training phase. The work is done while making predictions. Weights are assigned by kernel smoothing. The kernel function is the bell shaped function with parameter tau. Larger tau will result in a smoother curve.
 
-Weights are assigned by kernel smoothing.
+Definition of the kernels: https://en.wikipedia.org/wiki/Kernel_(statistics)
 
+There are many choices of kernels for locally weighted regression. The idea is to have a function with one local maximum that has a compact support. Below is some of the different kernels we discussed in class:
+
+```python
+# Tricubic Kernel
+def tricubic(x):
+  return np.where(np.abs(x)>1,0,70/81*(1-np.abs(x)**3)**3)
+  
+# Epanechnikov Kernel
+def Epanechnikov(x):
+  return np.where(np.abs(x)>1,0,3/4*(1-np.abs(x)**2)) 
+  
+# Quartic Kernel
+def Quartic(x):
+  return np.where(np.abs(x)>1,0,15/16*(1-np.abs(x)**2)**2) 
+```
 
 
 Drawbacks:
@@ -45,9 +60,7 @@ The message of this picture is that we are going to use kernels, such as Gaussia
 
 ## Different Kernels
 
-Definition of the kernels: https://en.wikipedia.org/wiki/Kernel_(statistics)
 
-There are many choices of kernels for locally weighted regression. The idea is to have a function with one local maximum that has a compact support.
 
 1.   The Exponential Kernel
 
