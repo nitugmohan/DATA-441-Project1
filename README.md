@@ -9,13 +9,13 @@ In this context, local properties are relative to a metric. A metric is a method
 
 The independent observations are the rows of the matrix $X$. Each row has a number of columns (this is the number of features) and we can denote it by $p.$ As such, every row is a vector in $\mathbb{R}^p.$ The distance between two independent observations is the Euclidean distance between the two represented $p-$ dimensional vectors. The equation is:
 
-![image](https://github.com/nitugmohan/DATA-441-Project1/blob/main/LWRequation.png)
+![image](https://github.com/nitugmohan/DATA-441-Project1/blob/449e96a6bfd6942f90d67cd657b1afd46523fa75/LWRequation.png)
 
 We shall have $n$ different weight vectors because we have $n$ different observations.
 
 The message of this picture is that we are going to use kernels, such as Gaussian or similar shapes, for solving local linear regression problems.
 
-![\label{fig:Loess_1}](https://github.com/nitugmohan/DATA-441/blob/main/Loess_1.drawio.svg)
+![\label{fig:Loess_1}](https://github.com/nitugmohan/DATA-441-Project1/blob/449e96a6bfd6942f90d67cd657b1afd46523fa75/Loess_1.drawio.svg)
 
 
 ```python
