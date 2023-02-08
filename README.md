@@ -15,6 +15,10 @@ Definition of the kernels: https://en.wikipedia.org/wiki/Kernel_(statistics)
 There are many choices of kernels for locally weighted regression. The idea is to have a function with one local maximum that has a compact support. Below is some of the different kernels we discussed in class:
 
 ```python
+# Gaussian Kernel
+def Gaussian(x):
+  return np.where(np.abs(x)>4,0,1/(np.sqrt(2*np.pi))*np.exp(-1/2*x**2))
+  
 # Tricubic Kernel
 def tricubic(x):
   return np.where(np.abs(x)>1,0,70/81*(1-np.abs(x)**3)**3)
@@ -27,18 +31,6 @@ def Epanechnikov(x):
 def Quartic(x):
   return np.where(np.abs(x)>1,0,15/16*(1-np.abs(x)**2)**2) 
 ```
-
-
-Drawbacks:
-1. Need to evaluate whole dataset everytime
-2. Higher computation cost
-3. More memory required
-
-
-
-
-
-
 
 
 **Main Idea:** Trends and associations are generally nonlinear; however, *locally*, trends can be interpreted linearly.
@@ -58,38 +50,12 @@ The message of this picture is that we are going to use kernels, such as Gaussia
 <img src="Loess_1.drawio.svg" class="Loess" alt="">
 </p>
 
-## Different Kernels
 
+Drawbacks:
+1. Need to evaluate whole dataset everytime
+2. Higher computation cost
+3. More memory required
 
-
-1.   The Exponential Kernel
-
-$$ K(x):= e^{-\frac{\|x\|^2}{2\tau}}$$
-
-
-2.   The Tricubic Kernel
-
-$$ K(x):=\begin{cases}
-(1-\|x\|^3)^3 \;\;\;if \;\;\; \|x\|<1 \\
-0 \;\;\; \text{otherwise}
-\end{cases}
-$$
-
-3.   The Epanechnikov Kernel
-
-$$ K(x):=\begin{cases}
-\frac{3}{4}(1-\|x\|^2) \;\;\;if \;\;\; \|x\|<1 \\
-0 \;\;\; \text{otherwise}
-\end{cases}
-$$
-
-3.   The Quartic Kernel
-
-$$ K(x):=\begin{cases}
-\frac{15}{16}(1-\|x\|^2)^2 \;\;\;if \;\;\; \|x\|<1 \\
-0 \;\;\; \text{otherwise}
-\end{cases}
-$$
 
 
 
