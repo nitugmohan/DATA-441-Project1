@@ -28,8 +28,7 @@ We shall have $n$ different weight vectors because we have $n$ different observa
 
 The message of this picture is that we are going to use kernels, such as Gaussian or similar shapes, for solving local linear regression problems.
 
-![image](https://github.com/nitugmohan/DATA-441-Project1/blob/main/Loess_1.drawio.svg)
-
+<img src="Loess_1.drawio.svg" class="Loess" alt="">
 
 ```python
 # Libraries of functions need to be imported
