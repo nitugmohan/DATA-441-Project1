@@ -1,5 +1,6 @@
 # Introduction to Locally Weighted Regression
 
+Nitu Girish Mohan
 
 ## Locally Weighted Regression
 
@@ -37,12 +38,12 @@ def Quartic(x):
 
 In this context, local properties are relative to a metric. A metric is a method by which we compute the distance between two observations. Observations contain multiple features, and if they are numeric, we can see them as vectors in a finite-dimensional Euclidean space.
 
-The independent observations are the rows of the matrix X . Each row has a number of columns (this is the number of features) and we can denote it by p- As such, every row is a vector in $\mathbb{R}^p.$ The distance between two independent observations is the Euclidean distance between the two represented p- dimensional vectors. The equation is:
+The independent observations are the rows of the matrix X . Each row has a number of columns (this is the number of features) and we can denote it by p- As such, every row is a vector in R^p. The distance between two independent observations is the Euclidean distance between the two represented p- dimensional vectors. The equation is:
 
 <img src="LWRequation.png" class="LWR" alt="">
 
 
-We shall have $n$ different weight vectors because we have $n$ different observations.
+We shall have n different weight vectors because we have n different observations.
 
 The message of this picture is that we are going to use kernels, such as Gaussian or similar shapes, for solving local linear regression problems.
 
@@ -236,6 +237,103 @@ plt.savefig("mtcars_line.png")
 <img src="scatter3.png" class="scatter3" alt="">
 
 
+## Experiment with kernels
+
+To continue our exploration of locally weighted regression, we can look at how kernels respond and decide which performs best. For this, I will be comparing Gaussian, Tricubic, Epanechnikov, and Quartic kernels.(For this exploration, I am working with simulated data.)
+
+```python
+#Initializing noisy non linear data
+x = np.linspace(0,4,401)
+noise = np.random.normal(loc = 0, scale = .2, size = len(x))
+y = np.sin(x**2 * 1.5 * np.pi ) 
+ynoisy = y + noise
+xtrain, xtest, ytrain, ytest = tts(x,ynoisy,test_size=0.2,shuffle=True,random_state=123)
+```
+
+
+First Gaussian:
+
+```python
+kf = KFold(n_splits=10,shuffle=True,random_state=123)
+
+mse_test_lowess = []
+for idxtrain, idxtest in kf.split(x):
+  xtrain = x[idxtrain]
+  xtest = x[idxtest]
+  ytrain = y[idxtrain]
+  ytest = y[idxtest]
+  # for our 1-dimensional input data we do not need scaling
+  model_lw = Lowess(kernel=Gaussian,tau=0.02)
+  model_lw.fit(xtrain,ytrain)
+  mse_test_lowess.append(mse(ytest,model_lw.predict(xtest)))
+print('The validated MSE for Lowess is : ' + str(np.mean(mse_test_lowess)) )
+```
+The validated MSE for Lowess is : 0.031105242933597725
+
+
+Second Tricubic:
+
+```python
+kf = KFold(n_splits=10,shuffle=True,random_state=123)
+
+mse_test_lowess = []
+for idxtrain, idxtest in kf.split(x):
+  xtrain = x[idxtrain]
+  xtest = x[idxtest]
+  ytrain = y[idxtrain]
+  ytest = y[idxtest]
+  # for our 1-dimensional input data we do not need scaling
+  model_lw = Lowess(kernel=Tricubic,tau=0.02)
+  model_lw.fit(xtrain,ytrain)
+  mse_test_lowess.append(mse(ytest,model_lw.predict(xtest)))
+print('The validated MSE for Lowess is : ' + str(np.mean(mse_test_lowess)) )
+```
+The validated MSE for Lowess is : 0.004232698784601303
+
+
+Third Epanechnikov:
+
+```python
+kf = KFold(n_splits=10,shuffle=True,random_state=123)
+
+mse_test_lowess = []
+for idxtrain, idxtest in kf.split(x):
+  xtrain = x[idxtrain]
+  xtest = x[idxtest]
+  ytrain = y[idxtrain]
+  ytest = y[idxtest]
+  # for our 1-dimensional input data we do not need scaling
+  model_lw = Lowess(kernel=Epanechnikov,tau=0.02)
+  model_lw.fit(xtrain,ytrain)
+  mse_test_lowess.append(mse(ytest,model_lw.predict(xtest)))
+print('The validated MSE for Lowess is : ' + str(np.mean(mse_test_lowess)) )
+```
+The validated MSE for Lowess is : 0.006252293296199783
+
+Fourth Quartic:
+
+```python
+kf = KFold(n_splits=10,shuffle=True,random_state=123)
+
+mse_test_lowess = []
+for idxtrain, idxtest in kf.split(x):
+  xtrain = x[idxtrain]
+  xtest = x[idxtest]
+  ytrain = y[idxtrain]
+  ytest = y[idxtest]
+  # for our 1-dimensional input data we do not need scaling
+  model_lw = Lowess(kernel=Quartic,tau=0.02)
+  model_lw.fit(xtrain,ytrain)
+  mse_test_lowess.append(mse(ytest,model_lw.predict(xtest)))
+print('The validated MSE for Lowess is : ' + str(np.mean(mse_test_lowess)) )
+```
+The validated MSE for Lowess is : 0.004029711359323845
+
+
 References: 
 1. https://www.geeksforgeeks.org/ml-locally-weighted-linear-regression/
-2. https://xavierbourretsicotte.github.io/loess.html
+2. https://xavierbourretsicotte.github.io/loess.
+3. https://www.youtube.com/watch?v=to_LPkV1bnI&ab_channel=Trouble-Free 
+4. https://www.cs.cmu.edu/afs/cs/project/jair/pub/volume4/cohn96a-html/node7.html
+5. https://en.wikipedia.org/wiki/Kernel_(statistics)
+6. Notebooks provided in class
