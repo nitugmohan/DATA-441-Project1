@@ -37,7 +37,7 @@ def Quartic(x):
 
 In this context, local properties are relative to a metric. A metric is a method by which we compute the distance between two observations. Observations contain multiple features, and if they are numeric, we can see them as vectors in a finite-dimensional Euclidean space.
 
-The independent observations are the rows of the matrix $X$ . Each row has a number of columns (this is the number of features) and we can denote it by $p.$ As such, every row is a vector in $\mathbb{R}^p.$ The distance between two independent observations is the Euclidean distance between the two represented $p-$ dimensional vectors. The equation is:
+The independent observations are the rows of the matrix X . Each row has a number of columns (this is the number of features) and we can denote it by p- As such, every row is a vector in $\mathbb{R}^p.$ The distance between two independent observations is the Euclidean distance between the two represented p- dimensional vectors. The equation is:
 
 <img src="LWRequation.png" class="LWR" alt="">
 
@@ -120,9 +120,120 @@ def lowess(x, y,x_new, kern, tau=0.05):
     return yest
 ```
 
+To show how this works, we can use the car dataset. We can analyze how well the regression does depending on the which kernel is used. By utilizing different kernel (smoothing) functions, we can attach different weights to points depending on the point's promixity to x.
+
+To begin, we will first load in the data and look at the car's miles per gallon compared to its weight:
 
 
+<img src="1stscatter.png" class="scatter1" alt="">
 
+If we do a linear regression, you will see that the line does not follow the data very well:
+
+```python
+x = cars["wt"].values
+y = cars["mpg"].values
+lm = linear_model.LinearRegression()
+model = lm.fit(x.reshape(-1,1),y)
+xhat = np.array([1.1,5.9]).reshape(-1,1)
+yhat = lm.predict(xhat)
+
+fig, ax = plt.subplots(1,1)
+plt.plot(xhat, yhat, '-',color='red',lw=2)
+plt.scatter(cars["wt"],cars["mpg"],color='deepskyblue',ec='k',s=30,alpha=0.7)
+plt.xlim(1,6)
+plt.ylim(5,40)
+plt.xlabel('Weight',fontsize=18)
+plt.ylabel('Miles Per Gallon',fontsize=18)
+ax.grid()
+ax.grid(which='major', color='#DDDDDD', linewidth=0.8)
+ax.grid(which='minor', color='#EEEEEE', linestyle=':', linewidth=0.5)
+ax.set_axisbelow(True)
+plt.minorticks_on()
+plt.savefig("mtcars_line.png")
+```
+
+<img src="scatter2.png" class="scatter2" alt="">
+
+
+However, if we utilize a kernel function in our locally weighted regression, we get a much better output. In the code below, we define the bell shaped kernel function. As you can see in the plot, we get a much better regression compared to the linear one.
+
+```python
+def kernel_function(xi,x0,tau= .005): 
+    return np.exp( - (xi - x0)**2/(2*tau))
+
+def weights_matrix(x,tau):
+  n = len(x)
+  return np.array([kernel_function(x,x[i],tau) for i in range(n)]) 
+  def lowess_bell_shape_kern(x, y, tau = .005):
+    """lowess_bell_shape_kern(x, y, tau = .005) -> the estimate of y denoted "yest"
+    Locally weighted regression: fits a nonparametric regression curve to a scatterplot.
+    The arrays x and y contain an equal number of elements; each pair
+    (x[i], y[i]) defines a data point in the scatterplot. The function returns
+    the estimated (smooth) values of y.
+    The kernel function is the bell shaped function with parameter tau. Larger tau will result in a
+    smoother curve. 
+    """
+    n = len(x)
+    yest = np.zeros(n)
+
+    #Initializing all weights from the bell shape kernel function    
+    # here w is an nxn matrix
+    w = weights_matrix(x,tau)    
+    
+    #Looping through all x-points
+    for i in range(n):
+        weights = w[:, i]
+        lm.fit(np.diag(w[:,i]).dot(x.reshape(-1,1)),np.diag(w[:,i]).dot(y.reshape(-1,1)))
+        yest[i] = lm.predict(x[i].reshape(-1,1)) 
+
+    return yest
+    
+ yhat = lowess_bell_shape_akern(x,y, tau= .001) 
+
+def lowess_bell_shape_kern(x, y, tau = .005):
+    """lowess_bell_shape_kern(x, y, tau = .005) -> the estimate of y denoted "yest"
+    Locally weighted regression: fits a nonparametric regression curve to a scatterplot.
+    The arrays x and y contain an equal number of elements; each pair
+    (x[i], y[i]) defines a data point in the scatterplot. The function returns
+    the estimated (smooth) values of y.
+    The kernel function is the bell shaped function with parameter tau. Larger tau will result in a
+    smoother curve. 
+    """
+    n = len(x)
+    yest = np.zeros(n)
+
+    #Initializing all weights from the bell shape kernel function    
+    # here w is an nxn matrix
+    w = weights_matrix(x,tau)    
+    
+    #Looping through all x-points
+    for i in range(n):
+        weights = w[:, i]
+        lm.fit(np.diag(w[:,i]).dot(x.reshape(-1,1)),np.diag(w[:,i]).dot(y.reshape(-1,1)))
+        yest[i] = lm.predict(x[i].reshape(-1,1)) 
+
+    return yest
+    
+    
+yhat = lowess_bell_shape_akern(x,y, tau= .001)
+ 
+ 
+fig, ax = plt.subplots(1,1)
+plt.plot(x[np.argsort(x)], yhat[np.argsort(x)], '-',color='red',lw=2) #argsort orders the data in increasining order
+plt.scatter(cars["wt"],cars["mpg"],color='deepskyblue',ec='k',s=30,alpha=0.7)
+plt.xlim(1,6)
+plt.ylim(5,40)
+plt.xlabel('Weight',fontsize=18)
+plt.ylabel('Miles Per Gallon',fontsize=18)
+ax.grid()
+ax.grid(which='major', color='#DDDDDD', linewidth=0.8)
+ax.grid(which='minor', color='#EEEEEE', linestyle=':', linewidth=0.5)
+ax.set_axisbelow(True)
+plt.minorticks_on()
+plt.savefig("mtcars_line.png")
+```
+
+<img src="scatter3.png" class="scatter3" alt="">
 
 
 References: 
