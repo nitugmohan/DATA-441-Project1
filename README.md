@@ -165,31 +165,6 @@ def kernel_function(xi,x0,tau= .005):
 def weights_matrix(x,tau):
   n = len(x)
   return np.array([kernel_function(x,x[i],tau) for i in range(n)]) 
-  def lowess_bell_shape_kern(x, y, tau = .005):
-    """lowess_bell_shape_kern(x, y, tau = .005) -> the estimate of y denoted "yest"
-    Locally weighted regression: fits a nonparametric regression curve to a scatterplot.
-    The arrays x and y contain an equal number of elements; each pair
-    (x[i], y[i]) defines a data point in the scatterplot. The function returns
-    the estimated (smooth) values of y.
-    The kernel function is the bell shaped function with parameter tau. Larger tau will result in a
-    smoother curve. 
-    """
-    n = len(x)
-    yest = np.zeros(n)
-
-    #Initializing all weights from the bell shape kernel function    
-    # here w is an nxn matrix
-    w = weights_matrix(x,tau)    
-    
-    #Looping through all x-points
-    for i in range(n):
-        weights = w[:, i]
-        lm.fit(np.diag(w[:,i]).dot(x.reshape(-1,1)),np.diag(w[:,i]).dot(y.reshape(-1,1)))
-        yest[i] = lm.predict(x[i].reshape(-1,1)) 
-
-    return yest
-    
- yhat = lowess_bell_shape_akern(x,y, tau= .001) 
 
 def lowess_bell_shape_kern(x, y, tau = .005):
     """lowess_bell_shape_kern(x, y, tau = .005) -> the estimate of y denoted "yest"
